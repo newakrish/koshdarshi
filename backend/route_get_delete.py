@@ -43,13 +43,4 @@ def delete_project(project_id):
     except Exception as e:
         db.session.rollback()
         return jsonify({"error": str(e)}), 400
-
-
-# -------------------- Register Blueprint --------------------
-app.register_blueprint(project_bp)
-
-# -------------------- MAIN --------------------
-if __name__ == "__main__":
-    with app.app_context():
-        db.create_all()
-        app.run(debug=True)
+# Note: Remember to register this blueprint in your main application file.
