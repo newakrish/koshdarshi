@@ -9,6 +9,9 @@ pp_bp = Blueprint('pp_bp', __name__)
 #allowed status values
 allowed_status = ['ongoing', 'completed', 'on-hold', 'cancelled']
 
+#allowed category values
+allowed_category = ['local','national']
+
 # Post Route to create a new project
 @pp_bp.route('/projects', methods=['POST'])
 def create_project():
@@ -25,6 +28,11 @@ def create_project():
     if status not in allowed_status:
         return jsonify({"error": f"Invalid status value. Must be one of: {allowed_status}"}), 400
 
+    #validate category
+    category = data.get('category')
+    if category.lower() not in allowed_category:
+        return jsonify({"error": f"Invalid category value. Must be one of: {allowed_category}"}), 400
+
     try:
         new_project = Project(
             project_name=data['project_name'],
@@ -33,7 +41,8 @@ def create_project():
             deadline=datetime.strptime(data['deadline'], '%Y-%m-%d').date(),
             address=data['address'],
             project_manager=data['project_manager'],
-            status=status
+            status=status,
+            category=category.lower()
         )
         db.session.add(new_project)
         db.session.commit()

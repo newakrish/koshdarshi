@@ -9,6 +9,7 @@ class Project(db.Model):
     address = db.Column(db.String(255), unique=False, nullable=False)
     project_manager = db.Column(db.String(100), unique=False, nullable=False)  
     status = db.Column(db.String(20), default='ongoing', nullable=False)
+    category = db.Column(db.String(50), unique=True, nullable=True)
     left_budget = db.Column(db.Float, unique=False, nullable=True)
     def to_json(self):
         return {
@@ -20,7 +21,8 @@ class Project(db.Model):
             "address": self.address,
             "project_manager": self.project_manager,
             "status": self.status,
-            "left_budget": self.left_budget
+            "left_budget": self.left_budget,
+            "category": self.category
         }
 
 class Expenditure(db.Model):
